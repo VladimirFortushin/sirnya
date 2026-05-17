@@ -35,7 +35,8 @@ cd в директорию нахождения sirnya.jar,
 запуск .jar: java -jar sirnya.jar 
 
 --- ## Примеры запросов 
-```Регистрация администратора 
+Регистрация администратора или юзера (role:"USER")
+```
 curl -X POST http://localhost:8080/api/auth/register \
 -H "Content-Type: application/json" \
 -d '{"login":"admin","password":"admin","role":"ADMIN"}'
@@ -43,27 +44,32 @@ curl -X POST http://localhost:8080/api/auth/register \
 ```Ответ
 {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzc5MDA5MTY2LCJleHAiOjE3NzkwMTI3NjZ9.Dp5apm_Kok0csa7-eO65db7GrKDL3Ek5MOLGfw7i-qc"} 
 ```
-```Занесение токена в переменную 
+Занесение токена в переменную 
+```
 ADMIN_TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{"login":"admin","password":"admin"}' | sed 's/.*"token":"\(.*\)"}/\1/')
 ```
-```Логин 
+Логин 
+```
 curl -X POST http://localhost:8080/api/auth/login \
 -H "Content-Type: application/json" \
 -d '{"login":"admin","password":"admin"}'
 ```
-```Генерация OTP 
+Генерация OTP (канал FILE)
+```
 curl -X POST http://localhost:8080/api/user/otp/generate \
--H "Authorization: Bearer $ADMIN_TOKEN" \
+-H "Authorization: Bearer $USER_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"operationId":"op1","channel":"FILE","destination":"test"}'
 ```
 ```Ответ 
 {"message":"Code sent"}
 ```
-```После этого в корневой папке проекта появится файл otp_code_test.txt с кодом. 
+После этого в корневой папке проекта появится файл otp_code_test.txt с кодом. 
+```
 OTP code: 166733
 ```
-```Валидация кода 
+Валидация кода 
+```
 curl -X POST http://localhost:8080/api/user/otp/validate
 -H "Authorization: Bearer $USER_TOKEN" -H "Content-Type: application/json"
 -d '{"operationId":"op1","code":"166733"}'
@@ -71,11 +77,22 @@ curl -X POST http://localhost:8080/api/user/otp/validate
 ```Ответ 
 {"valid":true}
 ```
-```Регистрация администратора 
-curl -X POST http://localhost:8080/api/auth/register \
--H "Content-Type: application/json" \
--d '{"login":"admin","password":"admin","role":"ADMIN"}'
+Изменение конфигурации OTP (администратор) (предварительно зарегистрировать админа и применить его $ADMIN_TOKEN)
 ```
-```Ответ
-{"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzc5MDA5MTY2LCJleHAiOjE3NzkwMTI3NjZ9.Dp5apm_Kok0csa7-eO65db7GrKDL3Ek5MOLGfw7i-qc"}
+curl -X PUT http://localhost:8080/api/admin/otp-config \
+  -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"codeLength":8,"lifetimeSeconds":600}'
+```
+Просмотр пользователей (админ)
+```
+curl -X GET http://localhost:8080/api/admin/users \
+  -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+Удаление пользователя (админ)
+```
+curl -X DELETE http://localhost:8080/api/admin/users/delete \
+  -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"userId":2}'
 ```
