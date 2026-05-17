@@ -40,6 +40,10 @@ cd в директорию нахождения sirnya.jar,
 curl -X POST http://localhost:8080/api/auth/register \
 -H "Content-Type: application/json" \
 -d '{"login":"admin","password":"admin","role":"ADMIN"}'
+
+curl -X POST http://localhost:8080/api/auth/register \
+-H "Content-Type: application/json" \
+-d '{"login":"user","password":"user","role":"USER"}'
 ```
 ```Ответ
 {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzc5MDA5MTY2LCJleHAiOjE3NzkwMTI3NjZ9.Dp5apm_Kok0csa7-eO65db7GrKDL3Ek5MOLGfw7i-qc"} 
@@ -47,12 +51,13 @@ curl -X POST http://localhost:8080/api/auth/register \
 Занесение токена в переменную 
 ```
 ADMIN_TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{"login":"admin","password":"admin"}' | sed 's/.*"token":"\(.*\)"}/\1/')
+USER_TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{"login":"user","password":"user"}' | sed 's/.*"token":"\(.*\)"}/\1/')
 ```
 Логин 
 ```
 curl -X POST http://localhost:8080/api/auth/login \
 -H "Content-Type: application/json" \
--d '{"login":"admin","password":"admin"}'
+-d '{"login":"user","password":"user"}'
 ```
 Генерация OTP (канал FILE)
 ```
