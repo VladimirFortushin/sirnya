@@ -14,14 +14,14 @@
 - Логирование (Logback).
 
 --- ## Методы 
-POST /api/auth/register - Регистрация нового пользователя 
-POST /api/auth/login - Аутентификация, получение JWT
-POST /api/user/otp/generate - Генерация и отправка OTP‑кода
-POST /api/user/otp/validate - Проверка OTP‑кода 
-GET /api/admin/otp-config - Получить текущую конфигурацию OTP 
-ADMIN PUT /api/admin/otp-config - Изменить конфигурацию OTP ADMIN 
-GET /api/admin/users - Список всех пользователей, кроме админов ADMIN 
-DELETE /api/admin/users/delete - Удалить пользователя и его OTP‑коды ADMIN 
+- POST /api/auth/register - Регистрация нового пользователя 
+- POST /api/auth/login - Аутентификация, получение JWT
+- POST /api/user/otp/generate - Генерация и отправка OTP‑кода
+- POST /api/user/otp/validate - Проверка OTP‑кода 
+- GET /api/admin/otp-config - Получить текущую конфигурацию OTP 
+- ADMIN PUT /api/admin/otp-config - Изменить конфигурацию OTP ADMIN 
+- GET /api/admin/users - Список всех пользователей, кроме админов ADMIN 
+- DELETE /api/admin/users/delete - Удалить пользователя и его OTP‑коды ADMIN 
 
 --- ## Требования 
 - **Java 26**
