@@ -74,7 +74,7 @@ public class ApiServer {
 
         server.createContext("/api/user/otp/generate", exchange -> {
             Claims claims = authenticate(exchange);
-            if (claims == null) return; // ошибка уже отправлена
+            if (claims == null) return;
             if (!"POST".equals(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(405, -1);
                 return;
